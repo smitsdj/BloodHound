@@ -1619,3 +1619,34 @@ export function buildAzureCloudApplicationAdmins(chunk) {
 
     return queries;
 }
+
+
+export function buildAzureLicenses(chunk) {
+    let queries = {};
+    queries.properties = {
+        statement:
+            'UNWIND $props AS prop MERGE (n:Base {objectid: prop.source}) SET n:AZLicense SET n.name = prop.name',
+        props: [],
+    };
+    let format = ['', 'AZLicense', 'AZHas', '{isacl: false, isazure: true}'];
+
+    for (let row of chunk) {
+        try {
+            queries.properties.props.push({
+                source: row.SkuId.toUpperCase(),
+                name: row.SkuPartnumber.toUpperCase(),
+            });
+
+            format[0] = 'AZUser';
+            insertNew(queries, format, {
+                source: row.UserID.toUpperCase(),
+                target: row.SkuId.toUpperCase(),
+            });
+        } catch (e) {
+            console.log(e);
+            console.log(row);
+        }
+    }
+
+    return queries;
+}
