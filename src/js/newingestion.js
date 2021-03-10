@@ -1620,7 +1620,6 @@ export function buildAzureCloudApplicationAdmins(chunk) {
     return queries;
 }
 
-
 export function buildAzureLicenses(chunk) {
     let queries = {};
     queries.properties = {
