@@ -1625,7 +1625,7 @@ export function buildAzureLicenses(chunk) {
     let queries = {};
     queries.properties = {
         statement:
-            'UNWIND $props AS prop MERGE (n:Base {objectid: prop.source}) SET n:AZLicense SET n.name = prop.name',
+            'UNWIND $props AS prop MERGE (n:Base {objectid: prop.source}) SET n:AZLicense SET n.azname = prop.name',
         props: [],
     };
     let format = ['', 'AZLicense', 'AZHas', '{isacl: false, isazure: true}'];
